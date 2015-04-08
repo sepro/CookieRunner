@@ -3,4 +3,6 @@ lib
 include
 pip-selfcheck.json
 
+*.swp
+
 __pycache__/
