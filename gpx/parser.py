@@ -3,18 +3,12 @@
 import argparse
 
 from xml.etree import ElementTree as etree 
-from math import pi, sin, cos, acos
+from math import sin, cos, acos, radians
 from datetime import datetime as dt
-
-def deg2rad(degrees):
-    return (pi * degrees) / 180
-
-def rad2deg(radians):
-    return (radians * 180)/pi
 
 def gpxDistance(lat1, lon1, lat2, lon2):
     theta = lon1 - lon2
-    rads = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) +  cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
+    rads = sin(radians(lat1)) * sin(radians(lat2)) +  cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(theta))
     rads = acos(rads);
 
     # multiply by radius of the earth to get distance
