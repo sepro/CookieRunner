@@ -1,5 +1,5 @@
 from flask import Flask
-from cookierun.main.controller import main
+from cookierun.controllers.main import main
 
 
 app = Flask(__name__)
