@@ -2,4 +2,6 @@
 
 from cookierun import app
 
-app.run(debug=True)
+app.config.from_pyfile('../config.cfg')
+
+app.run()
