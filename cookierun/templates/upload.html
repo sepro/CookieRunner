@@ -7,8 +7,19 @@
 
 
     <form action="" method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <span class="btn btn-default btn-file">
+                        Browse&hellip; <input type="file" name="file">
+                    </span>
+                </span>
+                <input type="text" class="form-control" readonly>
+                <span class="input-group-btn">
+                    <span class="btn btn-primary btn-file">
+                        Upload <input class="btn btn-primary" type=submit value=Upload>
+                    </span>
+                </span>
+            </div>
     </form>
 
 </div>
