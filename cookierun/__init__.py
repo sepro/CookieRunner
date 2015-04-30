@@ -1,6 +1,8 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
+from cookierun.database import db
+
 from cookierun.controllers.main import main
 from cookierun.controllers.cookie import cookie
 from cookierun.controllers.upload import upload
