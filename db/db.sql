@@ -28,3 +28,6 @@ create table users (
   reset_key varchar(255) not null,
   registered DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+insert into cookie (id, name, calories, brand, website)
+values (1, 'Oreo', 50, 'Oreo', 'www.oreo.com');
