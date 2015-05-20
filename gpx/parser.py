@@ -2,7 +2,7 @@
 
 import argparse
 
-from xml.etree import ElementTree as etree
+from xml.etree import ElementTree
 from math import sin, cos, acos, radians
 from datetime import datetime as dt
 
@@ -23,7 +23,7 @@ class GPXParser:
         self.data = []
 
     def read(self, filename):
-        tree = etree.parse(filename)
+        tree = ElementTree.parse(filename)
         root = tree.getroot()
 
         # Only consider first trk ! 
@@ -60,89 +60,88 @@ class GPXParser:
     @property
     def total_distance(self):
 
-        totalDistance = 0
+        distance = 0
 
         for segment in self.data:
-            segmentDistance = 0
+            segment_distance = 0
 
-            lastLon = None
-            lastLat = None
+            last_lon = None
+            last_lat = None
 
             for point in segment:
-                currentLon = point["lon"]
-                currentLat = point["lat"]
+                current_lon = point["lon"]
+                current_lat = point["lat"]
 
                 # in case data is missing skip point !
-                if currentLon is None or currentLat is None:
+                if current_lon is None or current_lat is None:
                     continue
 
                 # the first valid element is processed, get distance
-                if not (lastLon is None or lastLat is None):
-                    distance = gpx_distance(lastLat, lastLon, currentLat, currentLon)
-                    segmentDistance += distance
+                if not (last_lon is None or last_lat is None):
+                    d = gpx_distance(last_lat, last_lon, current_lat, current_lon)
+                    segment_distance += d
 
-                lastLon = currentLon
-                lastLat = currentLat
+                last_lon = current_lon
+                last_lat = current_lat
 
-            totalDistance = totalDistance + segmentDistance
+            distance += segment_distance
 
-        return totalDistance
+        return distance
 
     @property
     def total_time(self):
 
-        totalTime = 0
+        time = 0
         for segment in self.data:
-            segmentTime = 0
+            segment_time = 0
 
-            lastTime = None
+            last_time = None
 
             for point in segment:
-                currentTime = point["time"]
+                current_time = point["time"]
 
                 # in case data is missing skip point !
-                if currentTime is None:
+                if current_time is None:
                     continue
 
                 # the first valid element is processed, get distance
-                if not (lastTime is None):
-                    a = dt.strptime(lastTime, "%Y-%m-%d %H:%M:%S")
-                    b = dt.strptime(currentTime, "%Y-%m-%d %H:%M:%S")
-                    timeDiff = b - a
-                    segmentTime = segmentTime + timeDiff.seconds
+                if not (last_time is None):
+                    a = dt.strptime(last_time, "%Y-%m-%d %H:%M:%S")
+                    b = dt.strptime(current_time, "%Y-%m-%d %H:%M:%S")
+                    time_difference = b - a
+                    segment_time += time_difference.seconds
 
-                lastTime = currentTime
+                last_time = current_time
 
-            totalTime = totalTime + segmentTime
+            time += segment_time
 
-        return totalTime
+        return time
 
     @property
     def total_climb(self):
 
-        totalClimb = 0
+        climb = 0
         for segment in self.data:
-            segmentClimb = 0
+            segment_climb = 0
 
-            lastHeight = None
+            last_height = None
 
             for point in segment:
-                currentHeight = point["ele"]
+                current_height = point["ele"]
 
                 # in case data is missing skip point !
-                if currentHeight is None:
+                if current_height is None:
                     continue
 
                 # the first valid element is processed, get distance
-                if not (lastHeight is None):
-                    if currentHeight > lastHeight:
-                        segmentClimb = segmentClimb + (currentHeight - lastHeight)
+                if last_height is not None and current_height > last_height:
+                    segment_climb += (current_height - last_height)
 
-                lastHeight = currentHeight
+                last_height = current_height
 
-            totalClimb = totalClimb + segmentClimb
+            climb += segment_climb
 
-        return totalClimb
+        return climb
 
 # Start main function
 
