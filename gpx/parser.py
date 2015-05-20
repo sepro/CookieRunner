@@ -2,189 +2,147 @@
 
 import argparse
 
-from xml.etree import ElementTree as etree 
+from xml.etree import ElementTree as etree
 from math import sin, cos, acos, radians
 from datetime import datetime as dt
 
-def gpxDistance(lat1, lon1, lat2, lon2):
+
+def gpx_distance(lat1, lon1, lat2, lon2):
     theta = lon1 - lon2
-    rads = sin(radians(lat1)) * sin(radians(lat2)) +  cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(theta))
-    rads = acos(rads);
+    rads = sin(radians(lat1)) * sin(radians(lat2)) + cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(theta))
+    rads = acos(rads)
 
     # multiply by radius of the earth to get distance
     return rads * 6367
+
 
 class GPXParser:
     data = []
 
     def __init__(self):
         self.data = []
-    
+
     def read(self, filename):
         tree = etree.parse(filename)
         root = tree.getroot()
-    
+
         # Only consider first trk ! 
         trk = root.find('{http://www.topografix.com/GPX/1/1}trk')
         for segID, trkseg in enumerate(trk.findall('{http://www.topografix.com/GPX/1/1}trkseg')):
             segment = []
             for ptID, trkpt in enumerate(trkseg.findall('{http://www.topografix.com/GPX/1/1}trkpt')):
-                point = {}
-
-                point["segID"] = segID
-                point["ptID"] = ptID
-                point["lon"] = float(trkpt.attrib["lon"])
-                point["lat"] = float(trkpt.attrib["lat"])
-
-                point["ele"] = 0
-                point["time"] = 0
+                point = {
+                    "segID": segID,
+                    "ptID": ptID,
+                    "lon": float(trkpt.attrib["lon"]),
+                    "lat": float(trkpt.attrib["lat"]),
+                    "ele": 0,
+                    "time": 0
+                }
 
                 ele = trkpt.find('{http://www.topografix.com/GPX/1/1}ele')
-                if not ele is None:
+                if ele is not None:
                     point["ele"] = float(ele.text)
                 else:
                     point["ele"] = None
-            
 
                 time = trkpt.find('{http://www.topografix.com/GPX/1/1}time')
-                if not time is None:
+                if time is not None:
                     point["time"] = time.text.replace('T', ' ').replace('Z', '')
                 else:
                     point["time"] = None
-                
+
                 # print(point)
                 segment.append(point)
-                
+
             self.data.append(segment)
 
+    @property
+    def total_distance(self):
 
-def parseGPX(filename):
+        totalDistance = 0
 
-    tree = etree.parse(filename)
-    root = tree.getroot()
- 
-    data = []
- 
-    # Only consider first trk ! 
-    trk = root.find('{http://www.topografix.com/GPX/1/1}trk')
-    for segID, trkseg in enumerate(trk.findall('{http://www.topografix.com/GPX/1/1}trkseg')):
-        segment = []
-        for ptID, trkpt in enumerate(trkseg.findall('{http://www.topografix.com/GPX/1/1}trkpt')):
-            point = {}
+        for segment in self.data:
+            segmentDistance = 0
 
-            point["segID"] = segID
-            point["ptID"] = ptID
-            point["lon"] = float(trkpt.attrib["lon"])
-            point["lat"] = float(trkpt.attrib["lat"])
+            lastLon = None
+            lastLat = None
 
-            point["ele"] = 0
-            point["time"] = 0
+            for point in segment:
+                currentLon = point["lon"]
+                currentLat = point["lat"]
 
-            ele = trkpt.find('{http://www.topografix.com/GPX/1/1}ele')
-            if not ele is None:
-                point["ele"] = float(ele.text)
-            else:
-                point["ele"] = None
-        
+                # in case data is missing skip point !
+                if currentLon is None or currentLat is None:
+                    continue
 
-            time = trkpt.find('{http://www.topografix.com/GPX/1/1}time')
-            if not time is None:
-                point["time"] = time.text.replace('T', ' ').replace('Z', '')
-            else:
-                point["time"] = None
-            
-            # print(point)
-            segment.append(point)
-            
-        data.append(segment)
+                # the first valid element is processed, get distance
+                if not (lastLon is None or lastLat is None):
+                    distance = gpx_distance(lastLat, lastLon, currentLat, currentLon)
+                    segmentDistance += distance
 
-    return data
+                lastLon = currentLon
+                lastLat = currentLat
 
-def getDistance(gpxData):
+            totalDistance = totalDistance + segmentDistance
 
-    totalDistance = 0
+        return totalDistance
 
-    for segment in gpxData:
-        segmentDistance = 0
-        
-        lastLon = None
-        lastLat = None
+    @property
+    def total_time(self):
 
-        for point in segment:
-            currentLon = point["lon"]
-            currentLat = point["lat"]
+        totalTime = 0
+        for segment in self.data:
+            segmentTime = 0
 
-            # in case data is missing skip point !
-            if currentLon is None or currentLat is None:
-                continue
+            lastTime = None
 
-            # the first valid element is processed, get distance
-            if not (lastLon is None or lastLat is None):
-                distance = gpxDistance(lastLat, lastLon, currentLat, currentLon) 
-                segmentDistance = segmentDistance + distance
+            for point in segment:
+                currentTime = point["time"]
 
-            lastLon = currentLon
-            lastLat = currentLat
+                # in case data is missing skip point !
+                if currentTime is None:
+                    continue
 
-        totalDistance = totalDistance + segmentDistance
+                # the first valid element is processed, get distance
+                if not (lastTime is None):
+                    a = dt.strptime(lastTime, "%Y-%m-%d %H:%M:%S")
+                    b = dt.strptime(currentTime, "%Y-%m-%d %H:%M:%S")
+                    timeDiff = b - a
+                    segmentTime = segmentTime + timeDiff.seconds
 
-    return totalDistance
+                lastTime = currentTime
 
-def getTime(gpxData):
+            totalTime = totalTime + segmentTime
 
-    totalTime = 0
-    for segment in gpxData:
-        segmentTime = 0
-        
-        lastTime = None
+        return totalTime
 
-        for point in segment:
-            currentTime = point["time"]
+    @property
+    def total_climb(self):
 
-            # in case data is missing skip point !
-            if currentTime is None:
-                continue
+        totalClimb = 0
+        for segment in self.data:
+            segmentClimb = 0
 
-            # the first valid element is processed, get distance
-            if not (lastTime is None):
-                a = dt.strptime(lastTime, "%Y-%m-%d %H:%M:%S")
-                b = dt.strptime(currentTime, "%Y-%m-%d %H:%M:%S")
-                timeDiff = b - a
-                segmentTime = segmentTime + timeDiff.seconds
+            lastHeight = None
 
-            lastTime = currentTime
+            for point in segment:
+                currentHeight = point["ele"]
 
-        totalTime = totalTime + segmentTime
+                # in case data is missing skip point !
+                if currentHeight is None:
+                    continue
 
-    return totalTime
+                # the first valid element is processed, get distance
+                if not (lastHeight is None):
+                    if currentHeight > lastHeight:
+                        segmentClimb = segmentClimb + (currentHeight - lastHeight)
 
-def getClimb(gpxData):
+                lastHeight = currentHeight
 
-    totalClimb = 0
-    for segment in gpxData:
-        segmentClimb = 0
-        
-        lastHeight = None
+            totalClimb = totalClimb + segmentClimb
 
-        for point in segment:
-            currentHeight = point["ele"]
-
-            # in case data is missing skip point !
-            if currentHeight is None:
-                continue
-
-            # the first valid element is processed, get distance
-            if not (lastHeight is None):
-                if (currentHeight > lastHeight):
-                    segmentClimb = segmentClimb + (currentHeight - lastHeight)
-
-            lastHeight = currentHeight
-
-        totalClimb = totalClimb + segmentClimb
-
-    return totalClimb
-
-
+        return totalClimb
 
 # Start main function
 
@@ -193,29 +151,26 @@ if __name__ == '__main__':
 
     parser.add_argument('input', type=str, help='GPX file to analyze')
 
-    args = parser.parse_args()    
+    args = parser.parse_args()
 
     gpxParser = GPXParser()
 
     gpxParser.read(args.input)
 
-    loggedDistance = getDistance(gpxParser.data)
-    loggedTime = getTime(gpxParser.data)
-    loggedClimb = getClimb(gpxParser.data)
+    loggedDistance = gpxParser.total_distance
+    loggedTime = gpxParser.total_time
+    loggedClimb = gpxParser.total_climb
 
-    loggedCalories = 76*0.862911*loggedDistance
+    loggedCalories = 76 * 0.862911 * loggedDistance
 
-    avgSpeed = loggedDistance*3600/loggedTime
+    avgSpeed = loggedDistance * 3600 / loggedTime
 
     hours = loggedTime // 3600
-    minutes = (loggedTime % 3600)//60
+    minutes = (loggedTime % 3600) // 60
     seconds = (loggedTime % 3600) % 60
 
- 
     print("Distance:", loggedDistance, "km")
-    print("Time: ", hours, ':' , minutes, ':', seconds, sep='')
+    print("Time: ", hours, ':', minutes, ':', seconds, sep='')
     print("Speed:", avgSpeed, "km/h")
     print("Climb:", loggedClimb, " m")
     print("Calories:", loggedCalories, "Cal")
-    
-
