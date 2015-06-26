@@ -4,7 +4,7 @@ from sqlalchemy.sql import null
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    file_key = db.Column(db.String(255))
+    file_key = db.Column(db.Text)
     distance = db.Column(db.Float)
     calories = db.Column(db.Float)
     speed = db.Column(db.Float)

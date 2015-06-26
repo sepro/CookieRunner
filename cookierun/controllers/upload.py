@@ -3,6 +3,10 @@ from flask import current_app, render_template, request
 
 from gpx.parser import GPXParser
 
+from cookierun.models.routes import Route
+
+from cookierun.database import db
+
 from werkzeug.utils import secure_filename
 
 import os
@@ -27,6 +31,19 @@ def upload_screen():
 
             gpx_parser = GPXParser()
             gpx_parser.read(filename)
+
+            with open(filename, 'r') as content_file:
+                content = content_file.read()
+
+            route = Route(filename,
+                          gpx_parser.total_distance,
+                          gpx_parser.total_calories(),
+                          gpx_parser.average_speed,
+                          content,
+                          1)
+
+            db.session.add(route)
+            db.session.commit()
 
             return "Uploaded " + filename + "\nCalories " + str(gpx_parser.total_calories()) + "\nDistance " \
                    + str(gpx_parser.total_distance)

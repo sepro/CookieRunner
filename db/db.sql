@@ -1,6 +1,6 @@
 drop table if exists cookie;
-drop table if exists routes;
-drop table if exists users;
+drop table if exists route;
+drop table if exists user;
 
 create table cookie (
   id integer primary key autoincrement,
@@ -10,9 +10,9 @@ create table cookie (
   website text not null
 );
 
-create table routes (
+create table route (
   id integer primary key autoincrement,
-  file_key varchar(255) not null unique,
+  file_key text not null unique,
   distance float not null,
   calories float not null,
   speed float not null,
@@ -21,7 +21,7 @@ create table routes (
   added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-create table users (
+create table user (
   id integer primary key autoincrement,
   username varchar(255) not null unique,
   email varchar(255) not null,
