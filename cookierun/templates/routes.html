@@ -7,10 +7,24 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        Distance: {{ route.distance|round(1) }} km
-        Speed: {{ route.distance|round(1) }} km/h
-        Duration: {{ (route.duration//3600)|int }} : {{ ((route.duration % 3600)//60)|int }} : {{ (route.duration%60)|int }}
-        Calories: {{ route.calories|round(1) }} Cal
+        <div class="row">
+            <div class="col-lg-3 col-xs-2 text-center">
+                Distance
+                <h2>{{ route.distance|round(1) }} <small>km</small></h2>
+            </div>
+            <div class="col-lg-3 col-xs-2 text-center">
+                Speed
+                <h2>{{ route.distance|round(1) }} <small>km/h</small></h2>
+            </div>
+            <div class="col-lg-3 col-xs-2 text-center">
+                Duration
+                <h2>{{ (route.duration//3600)|int }} : {{ ((route.duration % 3600)//60)|int }} : {{ (route.duration%60)|int }}</h2>
+            </div>
+            <div class="col-lg-3 col-xs-2 text-center">
+                Calories
+                <h2>{{ route.calories|round(1) }} <small>Cal</small></h2></div>
+        </div>
+
     </div>
 </div>
 

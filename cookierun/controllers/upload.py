@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import current_app, render_template, request
+from flask import Blueprint,current_app, render_template, request, redirect, url_for
 
 from gpx.parser import GPXParser
 
@@ -46,8 +45,8 @@ def upload_screen():
             db.session.add(route)
             db.session.commit()
 
-            return "Uploaded " + filename + "\nCalories " + str(gpx_parser.total_calories()) + "\nDistance " \
-                   + str(gpx_parser.total_distance) + "\n " + str(route.id)
+            # return redirect(url_for('routes.view', route_id=route.id))
+            return redirect(url_for('routes.routes_view', route_id=route.id))
 
     return render_template('upload.html')
 
