@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import current_app, render_template, request
+from gpx.parser import GPXParser
 
 from werkzeug.utils import secure_filename
 
@@ -20,8 +21,14 @@ def upload_screen():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            return "Uploaded " + filename
+            filename = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(filename)
+
+            gpx_parser = GPXParser()
+            gpx_parser.read(filename)
+
+            return "Uploaded " + filename + "\nCalories " + str(gpx_parser.total_calories()) + "\nDistance " \
+                   + str(gpx_parser.total_distance)
     return render_template('upload.html')
 
 

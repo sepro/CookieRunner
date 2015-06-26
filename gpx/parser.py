@@ -8,6 +8,15 @@ from datetime import datetime as dt
 
 
 def gpx_distance(lat1, lon1, lat2, lon2):
+    """
+    Gives the distance between two gpx positions in kilometer (km)
+
+    :param lat1: latitude of the first position
+    :param lon1: longitude of the first position
+    :param lat2: latitude of the second position
+    :param lon2: longitude of the second position
+    :return: the distance between both points in kilometer (km)
+    """
     theta = lon1 - lon2
     rads = sin(radians(lat1)) * sin(radians(lat2)) + cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(theta))
     rads = acos(rads)
@@ -17,12 +26,18 @@ def gpx_distance(lat1, lon1, lat2, lon2):
 
 
 class GPXParser:
+
     data = []
 
     def __init__(self):
         self.data = []
 
     def read(self, filename):
+        """
+        reads a gpx file. The required information is stored in self.data
+
+        :param filename: path to the file to read
+        """
         tree = ElementTree.parse(filename)
         root = tree.getroot()
 
@@ -57,9 +72,22 @@ class GPXParser:
 
             self.data.append(segment)
 
+    def total_calories(self, weight=75):
+        """
+        Calculates the amount of Calories burnt running the track in the gpx file.
+
+        :param weight: The weight of the runner in kilogram (kg, default 75 kg)
+        :return: Calories burnt in Cal (kcal)
+        """
+        return weight * 0.862911 * self.total_distance
+
     @property
     def total_distance(self):
+        """
+        Calculates the length of the track in the gpx file in kilometer (km)
 
+        :return: total length of the gpx file in kilometer
+        """
         distance = 0
 
         for segment in self.data:
@@ -90,7 +118,11 @@ class GPXParser:
 
     @property
     def total_time(self):
+        """
+        Calculates in which time the gpx track was completed.
 
+        :return: Time it took to complete the track in seconds (s)
+        """
         time = 0
         for segment in self.data:
             segment_time = 0
@@ -119,7 +151,11 @@ class GPXParser:
 
     @property
     def total_climb(self):
+        """
+        Calculates how many meters the track climbed up in meters (m).
 
+        :return: total climb in meter (m)
+        """
         climb = 0
         for segment in self.data:
             segment_climb = 0
@@ -142,6 +178,17 @@ class GPXParser:
             climb += segment_climb
 
         return climb
+
+    @property
+    def average_speed(self):
+        """
+        Calculates the average speed at which the track was completed
+
+        :return: average speed in kilometer/hour
+        """
+        return self.total_distance * 3600 / self.total_time
+
+
 
 # Start main function
 
