@@ -12,7 +12,7 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 app.register_blueprint(main)
-app.register_blueprint(cookies)
-app.register_blueprint(upload)
+app.register_blueprint(cookies, url_prefix='/cookies')
+app.register_blueprint(upload, url_prefix='/upload')
 
 db.create_all()

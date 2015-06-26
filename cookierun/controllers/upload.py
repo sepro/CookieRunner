@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import current_app, render_template, request
+
 from gpx.parser import GPXParser
 
 from werkzeug.utils import secure_filename
@@ -15,7 +16,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-@upload.route('/upload', methods=['GET', 'POST'])
+@upload.route('/', methods=['GET', 'POST'])
 def upload_screen():
     if request.method == 'POST':
         file = request.files['file']
@@ -32,6 +33,6 @@ def upload_screen():
     return render_template('upload.html')
 
 
-@upload.route('/upconfig')
-def upconfig():
+@upload.route('/config')
+def config():
     return current_app.config['UPLOAD_FOLDER']

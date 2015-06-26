@@ -1,5 +1,5 @@
 drop table if exists cookie;
-drop table if exists gpx;
+drop table if exists routes;
 drop table if exists users;
 
 create table cookie (
@@ -10,14 +10,14 @@ create table cookie (
   website text not null
 );
 
-create table gpx (
+create table routes (
   id integer primary key autoincrement,
   file_key varchar(255) not null unique,
   distance float not null,
   calories float not null,
   speed float not null,
   gpx text not null,
-  user_id integer not null,
+  user_id integer null,
   added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
