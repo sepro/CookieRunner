@@ -19,6 +19,11 @@ def gpx_distance(lat1, lon1, lat2, lon2):
     """
     theta = lon1 - lon2
     rads = sin(radians(lat1)) * sin(radians(lat2)) + cos(radians(lat1)) * cos(radians(lat2)) * cos(radians(theta))
+
+    # make sure rads is [-1, 1]
+    rads = 1 if rads > 1 else rads
+    rads = -1 if rads < -1 else rads
+
     rads = acos(rads)
 
     # multiply by radius of the earth to get distance
