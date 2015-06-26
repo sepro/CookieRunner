@@ -16,6 +16,7 @@ create table route (
   distance float not null,
   calories float not null,
   speed float not null,
+  duration float not null,
   gpx text not null,
   user_id integer null,
   added DATETIME DEFAULT CURRENT_TIMESTAMP

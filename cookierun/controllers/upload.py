@@ -39,6 +39,7 @@ def upload_screen():
                           gpx_parser.total_distance,
                           gpx_parser.total_calories(),
                           gpx_parser.average_speed,
+                          gpx_parser.total_time,
                           content,
                           1)
 
@@ -46,7 +47,8 @@ def upload_screen():
             db.session.commit()
 
             return "Uploaded " + filename + "\nCalories " + str(gpx_parser.total_calories()) + "\nDistance " \
-                   + str(gpx_parser.total_distance)
+                   + str(gpx_parser.total_distance) + "\n " + str(route.id)
+
     return render_template('upload.html')
 
 

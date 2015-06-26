@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="top-pad">
+
+<h1>Route</h1>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        Distance: {{ route.distance|round(1) }} km
+        Speed: {{ route.distance|round(1) }} km/h
+        Duration: {{ (route.duration//3600)|int }} : {{ ((route.duration % 3600)//60)|int }} : {{ (route.duration%60)|int }}
+        Calories: {{ route.calories|round(1) }} Cal
+    </div>
+</div>
+
+
+</div>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

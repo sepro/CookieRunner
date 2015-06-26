@@ -8,14 +8,16 @@ class Route(db.Model):
     distance = db.Column(db.Float)
     calories = db.Column(db.Float)
     speed = db.Column(db.Float)
+    duration = db.Column(db.Float)
     gpx = db.Column(db.Text)
     user_id = db.Column(db.Integer)
 
-    def __init__(self, file_key, distance, calories, speed, gpx, user_id=null):
+    def __init__(self, file_key, distance, calories, speed, duration, gpx, user_id=null):
         self.file_key = file_key
         self.distance = distance
         self.calories = calories
         self.speed = speed
+        self.duration = duration
         self.gpx = gpx
         self.user_id = user_id
 
