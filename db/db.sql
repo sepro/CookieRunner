@@ -25,8 +25,11 @@ create table route (
 create table user (
   id integer primary key autoincrement,
   username varchar(255) not null unique,
+  password_hash varchar(255) not null,
   email varchar(255) not null,
-  reset_key varchar(255) not null,
+  reset_key varchar(255),
+  is_admin BOOLEAN,
+  is_banned BOOLEAN,
   registered DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
