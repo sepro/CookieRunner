@@ -8,7 +8,7 @@
 
         <ul>
             {% for route in routes %}
-                <li><a href="{{ url_for('routes.routes_view', route_id=route.id) }}">Route {{ route.id }}</a></li>
+                <li><a href="{{ url_for('routes.routes_view', route_id=route.id) }}">Route {{ route.id }}</a> (added {{ route.added }})</li>
             {% else %}
                 <li>No routes found in the database!</li>
             {% endfor %}
@@ -17,7 +17,7 @@
     {% endif %}
 
     {% if route %}
-        <h1>Route {{ route.id }}</h1>
+        <h1>Route {{ route.id }} <small>(added {{ route.added }})</small></h1>
 
         <div class="panel panel-default">
             <div class="panel-body">
