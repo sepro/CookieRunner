@@ -3,7 +3,21 @@
 {% block container %}
 <div class="top-pad">
 
-<h1>Hello Cookies !</h1>
+    {% if cookies %}
+    <h1>Cookies in the database</h1>
+        <ul>
+            {% for cookie in cookies %}
+                <li>{{ cookie.name }} <a href="{{ url_for('cookies.cookies_view', cookie_id=cookie.id) }}">details</a></li>
+            {% else %}
+                <li>No cookies found in the database !</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if cookie %}
+        <h1>Cookie : {{ cookie.name }} <small>(<a href="http://{{ cookie.website }}">{{ cookie.brand }}</a>)</small></h1>
+        <em>Calories: </em> {{ cookie.calories }}
+    {% endif %}
 
 </div>
 {% endblock %}

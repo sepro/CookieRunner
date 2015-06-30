@@ -3,31 +3,45 @@
 {% block container %}
 <div class="top-pad">
 
-<h1>Route</h1>
+    {% if routes %}
+        <h1>Routes in the database</h1>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-lg-3 col-xs-2 text-center">
-                Distance
-                <h2>{{ route.distance|round(1) }} <small>km</small></h2>
+        <ul>
+            {% for route in routes %}
+                <li><a href="{{ url_for('routes.routes_view', route_id=route.id) }}">Route {{ route.id }}</a></li>
+            {% else %}
+                <li>No routes found in the database!</li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+    {% if route %}
+        <h1>Route {{ route.id }}</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3 col-xs-2 text-center">
+                        Distance
+                        <h2>{{ route.distance|round(1) }} <small>km</small></h2>
+                    </div>
+                    <div class="col-lg-3 col-xs-2 text-center">
+                        Speed
+                        <h2>{{ route.speed|round(1) }} <small>km/h</small></h2>
+                    </div>
+                    <div class="col-lg-3 col-xs-2 text-center">
+                        Duration
+                        <h2>{{ (route.duration//3600)|int }}:{{ ((route.duration % 3600)//60)|int }}:{{ (route.duration%60)|int }}</h2>
+                    </div>
+                    <div class="col-lg-3 col-xs-2 text-center">
+                        Calories
+                        <h2>{{ route.calories|round(1) }} <small>Cal</small></h2></div>
+                </div>
+
             </div>
-            <div class="col-lg-3 col-xs-2 text-center">
-                Speed
-                <h2>{{ route.distance|round(1) }} <small>km/h</small></h2>
-            </div>
-            <div class="col-lg-3 col-xs-2 text-center">
-                Duration
-                <h2>{{ (route.duration//3600)|int }}:{{ ((route.duration % 3600)//60)|int }}:{{ (route.duration%60)|int }}</h2>
-            </div>
-            <div class="col-lg-3 col-xs-2 text-center">
-                Calories
-                <h2>{{ route.calories|round(1) }} <small>Cal</small></h2></div>
         </div>
-
-    </div>
-</div>
-
+    {% endif %}
 
 </div>
 {% endblock %}
