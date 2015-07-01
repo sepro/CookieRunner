@@ -2,11 +2,12 @@
 
 {% block container %}
 <div class="top-pad">
+    <h1>CookieRunner: Log In</h1>
     <form method="POST"  action="{{ url_for('auth.login') }}"  role="form">
     {{ form.csrf_token }}
-        <div class="form-group">{{ form.username.label }}: {{form.username() }}</div>
-        <div class="form-group">{{ form.password.label }}: {{form.password() }}</div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div class="form-group">{{ form.username.label }}: {{form.username(class_="form-control") }}</div>
+        <div class="form-group">{{ form.password.label }}: {{form.password(class_="form-control") }}</div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 {% endblock %}

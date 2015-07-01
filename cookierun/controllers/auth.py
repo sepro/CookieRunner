@@ -7,7 +7,9 @@ from cookierun.forms.login import LoginForm
 from cookierun.forms.registration import RegistrationForm
 from cookierun.database import db
 
-auth = Blueprint('login', __name__)
+from datetime import datetime
+
+auth = Blueprint('auth', __name__)
 
 @login_manager.user_loader
 def load_user(id):
@@ -27,12 +29,13 @@ def register():
     if request.method == 'POST' and form.validate():
         username = request.form.get('username')
         password = request.form.get('password')
+        email = request.form.get('email')
         existing_username = User.query.filter_by(username=username).first()
         if existing_username:
             flash('This username has been already taken. Try another one.', 'warning')
             return render_template('register.html', form=form)
 
-        user = User(username, password)
+        user = User(username, password, email, '', False, False, datetime.now().replace(microsecond=0))
         db.session.add(user)
         db.session.commit()
         flash('You are now registered. Please login.', 'success')
