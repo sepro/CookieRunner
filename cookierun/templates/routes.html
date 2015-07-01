@@ -41,10 +41,26 @@
 
             </div>
         </div>
+        <div class="calories"></div>
     {% endif %}
-
 </div>
 {% endblock %}
 
 {% block extrajs %}
+    {% if route %}
+        <script>
+        var items = [];
+        $.getJSON( "{{ url_for('cookies.cookies_count', calories=(route.calories|round(1)))}}", function( data ) {
+
+            $.each( data, function( key, val ) {
+                items.push( "<li id='" + key + "'>" + key + ": " + val + "</li>" );
+            });
+
+            $( "<ul/>", {
+                "class": "my-new-list",
+                html: items.join( "" )
+            }).appendTo( ".calories" );
+        });
+        </script>
+    {% endif %}
 {% endblock %}
