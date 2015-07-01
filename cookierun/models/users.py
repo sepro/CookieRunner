@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from cookierun.database import db
 from datetime import datetime
 
@@ -11,10 +12,10 @@ class User(db.Model):
     is_banned = db.Column(db.Boolean)
     registered = db.Column(db.DateTime)
 
-    def __init__(self, username, password_hash, email, reset_key='', is_admin=False, is_banned=False,
+    def __init__(self, username, password, email, reset_key='', is_admin=False, is_banned=False,
                  registered=datetime.now().replace(microsecond=0)):
         self.username = username
-        self.password_hash = password_hash
+        self.password_hash = generate_password_hash(password)
         self.email = email
         self.reset_key = reset_key
         self.is_admin = is_admin
@@ -23,6 +24,9 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %d>' % self.id
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def is_authenticated(self):
         return True

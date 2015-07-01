@@ -28,10 +28,19 @@ create table user (
   password_hash varchar(255) not null,
   email varchar(255) not null,
   reset_key varchar(255),
-  is_admin BOOLEAN,
-  is_banned BOOLEAN,
+  is_admin BOOLEAN DEFAULT FALSE,
+  is_banned BOOLEAN DEFAULT FALSE,
   registered DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 insert into cookie (id, name, calories, brand, website)
-values (1, 'Oreo', 50, 'Oreo', 'www.oreo.com');
+values (1,'Oreo - Original',53.0,'Oreo','www.oreo.com'),
+ (2,'Oreo - Chocolate Cream',51.0,'Oreo','www.oreo.com'),
+ (3,'Oreo - White Choc',105.0,'Oreo','www.oreo.com'),
+ (4,'Oreo - Milk Choc',105.0,'Oreo','www.oreo.com'),
+ (5,'Pim''s Orange',50.0,'LU','http://www.lubiscuits.com/'),
+ (6,'Pim''s Raspberry',50.0,'LU','http://www.lubiscuits.com/'),
+ (7,'Dinosaurus Chocolate',95.0,'Lotus','http://www.lotusbakeries.com/'),
+ (8,'Dinosaurus Milk Chocolate',94.0,'Lotus','http://www.lotusbakeries.com/'),
+ (9,'Dinosaurus Grains',71.0,'Lotus','http://www.lotusbakeries.com/');
+
