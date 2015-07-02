@@ -41,7 +41,15 @@
 
             </div>
         </div>
-        <div class="calories"></div>
+        <div class="row">
+        <div class="form-group col-md-6 col-xs-12">
+            <label for="sel1">Which cookies would you like to eat?</label>
+            <select class="cookielist form-control" id="sel1">
+                <option>Select cookie...</option>
+            </select>
+        </div>
+        <div class="well col-md-6 col-xs-12" id="result">Select a cookie to see how many you can eat !</div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
@@ -49,18 +57,25 @@
 {% block extrajs %}
     {% if route %}
         <script>
-        var items = [];
+        var counts = {};
         $.getJSON( "{{ url_for('cookies.cookies_count', calories=(route.calories|round(1)))}}", function( data ) {
 
             $.each( data, function( key, val ) {
-                items.push( "<li id='" + key + "'>" + key + ": " + val + "</li>" );
+                counts[key] = val;
+                $( "<option value=\"" + key +"\">" + key + "</option>" ).appendTo(".cookielist");
             });
-
-            $( "<ul/>", {
-                "class": "my-new-list",
-                html: items.join( "" )
-            }).appendTo( ".calories" );
         });
+
+        $("#sel1").on("change", function() {
+            $(this).find('option:first-child').prop("disabled",true);
+            count = counts[$(this).val()];
+            if(count == 0) {
+                $("#result").text("You can eat " + count + " " + $(this).val() + " cookie !")
+            } else {
+                $("#result").text("You can eat " + count + " " + $(this).val() + " cookies !")
+            }
+        })
+
         </script>
     {% endif %}
 {% endblock %}
