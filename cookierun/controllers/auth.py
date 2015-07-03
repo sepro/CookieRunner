@@ -57,13 +57,14 @@ def login():
     if request.method == 'POST' and form.validate():
         username = request.form.get('username')
         password = request.form.get('password')
+        keep_logged = True if request.form.get('keep_logged') == 'y' else False
         existing_user = User.query.filter_by(username=username).first()
 
         if not (existing_user and existing_user.check_password(password)):
             flash('Invalid username or password. Please try again.', 'danger')
             return render_template('login.html', form=form)
 
-        login_user(existing_user)
+        login_user(existing_user, remember=keep_logged)
         flash('You have successfully logged in.', 'success')
         return redirect(url_for('main.main_screen'))
 
@@ -75,5 +76,6 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    flash('You have successfully logged out.', 'success')
     logout_user()
     return redirect(url_for('main.main_screen'))

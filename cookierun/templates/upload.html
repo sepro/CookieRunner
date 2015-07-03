@@ -5,22 +5,25 @@
 
 <h1>CookieRunner: Upload File</h1>
 
-
-    <form action="" method=post enctype=multipart/form-data>
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <span class="btn btn-default btn-file">
-                        Browse&hellip; <input type="file" name="file">
-                    </span>
-                </span>
-                <input type="text" class="form-control" readonly>
-                <span class="input-group-btn">
-                    <span class="btn btn-primary btn-file">
-                        Upload <input class="btn btn-primary" type=submit value=Upload>
-                    </span>
-                </span>
-            </div>
-    </form>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
+            <form action="" method=post enctype=multipart/form-data>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-default btn-file">
+                                Browse&hellip; <input type="file" name="file">
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" readonly>
+                        <span class="input-group-btn">
+                            <span class="btn btn-primary btn-file">
+                                Upload <input class="btn btn-primary" type=submit value=Upload>
+                            </span>
+                        </span>
+                    </div>
+            </form>
+        </div>
+    </div>
 
 </div>
 {% endblock %}

@@ -5,9 +5,11 @@
 
 <h1>CookieRunner <small>run to eat your favorite cookies !</small></h1>
 
-<div class="row text-center">
-    <a href="{{ url_for('upload.upload_screen') }}" class="btn btn-primary"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload a GPX file now</a>
-
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
+        <a href="{{ url_for('upload.upload_screen') }}"><span class="glyphicon glyphicon-upload glyphicon-large" aria-hidden="true"></span></a><br/>
+        <a href="{{ url_for('upload.upload_screen') }}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload a GPX file now</a>
+    </div>
 </div>
 
 </div>
