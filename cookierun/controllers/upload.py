@@ -1,4 +1,5 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash
+from flask.ext.login import current_user
 from gpx.parser import GPXParser
 from cookierun.models.routes import Route
 from cookierun.database import db
@@ -37,16 +38,19 @@ def upload_screen():
             with open(filename, 'r') as content_file:
                 content = content_file.read()
 
-            route_exisits = Route.query.filter_by(file_key=hasher.hexdigest()).first()
+            user_id = current_user.id if current_user.is_authenticated() else -1
 
-            if route_exisits is None:
+            file_hash = hasher.hexdigest() + '_' + str(user_id)
+            route_exists = Route.query.filter_by(file_key=file_hash).first()
+
+            if route_exists is None:
                 route = Route(hasher.hexdigest(),
                               gpx_parser.total_distance,
                               gpx_parser.total_calories(),
                               gpx_parser.average_speed,
                               gpx_parser.total_time,
                               content,
-                              1,
+                              user_id,
                               datetime.now().replace(microsecond=0))
 
                 db.session.add(route)
@@ -55,11 +59,7 @@ def upload_screen():
                 flash("Uploaded file !", "success")
                 return redirect(url_for('routes.routes_view', route_id=route.id))
             else:
-                return redirect(url_for('routes.routes_view', route_id=route_exisits.id))
+                return redirect(url_for('routes.routes_view', route_id=route_exists.id))
 
     return render_template('upload.html')
 
-
-@upload.route('/config')
-def config():
-    return current_app.config['UPLOAD_FOLDER']
