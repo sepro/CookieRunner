@@ -21,6 +21,12 @@
                     <a class="navbar-brand" href="{{ url_for('main.main_screen') }}">CookieRunner</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class=""><a href="{{ url_for('upload.upload_screen') }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add run</a></li>
+                        {% if current_user.is_authenticated() %}
+                        <li class=""><a href="{{ url_for('routes.routes_user') }}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View runs</a></li>
+                        {% endif %}
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             {% if current_user.is_authenticated() %}
@@ -29,7 +35,7 @@
                                 <li><a href="{{ url_for('auth.logout') }}">Log out</a></li>
                                 {% if current_user.is_administrator() %}
                                 <li role="separator" class="divider"></li>
-                                <li><a href="admin">Admin panel</a></li>
+                                <li><a href="/admin">Admin panel</a></li>
                                 {% endif %}
                             </ul>
                             {% else %}
