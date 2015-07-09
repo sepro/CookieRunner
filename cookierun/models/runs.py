@@ -2,7 +2,7 @@ from cookierun.database import db
 from sqlalchemy.sql import null
 from datetime import datetime
 
-class Route(db.Model):
+class Run(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_key = db.Column(db.Text)
     distance = db.Column(db.Float)
@@ -25,4 +25,4 @@ class Route(db.Model):
         self.added = added
 
     def __repr__(self):
-        return '<Route %d>' % self.id
+        return '<Run %d>' % self.id

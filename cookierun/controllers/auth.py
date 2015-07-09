@@ -12,8 +12,8 @@ from datetime import datetime
 auth = Blueprint('auth', __name__)
 
 @login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @auth.before_request
 def get_current_user():
@@ -21,8 +21,11 @@ def get_current_user():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    function to register a user
+    """
     if current_user.is_authenticated():
-        flash('You are already logged in.')
+        flash('You are already logged in.', 'warning')
         return redirect(url_for('main.main_screen'))
 
     form = RegistrationForm(request.form)
@@ -49,6 +52,9 @@ def register():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    function to check a user's credentials and log him in
+    """
     if current_user.is_authenticated():
         flash('You are already logged in.')
         return redirect(url_for('main.main_screen'))

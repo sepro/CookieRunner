@@ -3,10 +3,10 @@
 {% block container %}
 <div class="top-pad">
 
-    {% if routes %}
+    {% if runs %}
         <div class="row">
             <div class="col-xs-12 col-md-6">
-                <h1>Routes in the database</h1>
+                <h1>Runs in the database</h1>
 
                 <div class="panel panel-default">
                         <table class="table table-striped">
@@ -14,10 +14,10 @@
                                 <tr><td>Name</td><td>Date</td></tr>
                             </thead>
                             <tbody>
-                            {% for route in routes %}
-                                <tr><td><a href="{{ url_for('routes.routes_view', route_id=route.id) }}">Route {{ route.id }}</a></td><td>{{ route.added }}</td></tr>
+                            {% for run in runs %}
+                                <tr><td><a href="{{ url_for('runs.runs_view', run_id=run.id) }}">Run {{ run.id }}</a></td><td>{{ run.added }}</td></tr>
                             {% else %}
-                                <tr><td>No routes found in the database!</td></tr>
+                                <tr><td>No runs found in the database!</td></tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -26,29 +26,29 @@
         </div>
     {% endif %}
 
-    {% if route %}
+    {% if run %}
         <div class="row">
             <div class="col-xs-12">
-                <h1>Route {{ route.id }} <small>(added {{ route.added }})</small></h1>
+                <h1>Run {{ run.id }} <small>(added {{ run.added }})</small></h1>
 
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3 col-xs-6 text-center">
                                 Distance
-                                <h2>{{ route.distance|round(1) }} <small>km</small></h2>
+                                <h2>{{ run.distance|round(1) }} <small>km</small></h2>
                             </div>
                             <div class="col-md-3 col-xs-6 text-center">
                                 Speed
-                                <h2>{{ route.speed|round(1) }} <small>km/h</small></h2>
+                                <h2>{{ run.speed|round(1) }} <small>km/h</small></h2>
                             </div>
                             <div class="col-md-3 col-xs-6 text-center">
                                 Duration
-                                <h2>{{ (route.duration//3600)|int }}:{{ ((route.duration % 3600)//60)|int }}:{{ (route.duration%60)|int }}</h2>
+                                <h2>{{ (run.duration//3600)|int }}:{{ ((run.duration % 3600)//60)|int }}:{{ (run.duration%60)|int }}</h2>
                             </div>
                             <div class="col-md-3 col-xs-6 text-center">
                                 Calories
-                                <h2>{{ route.calories|round(1) }} <small>Cal</small></h2></div>
+                                <h2>{{ run.calories|round(1) }} <small>Cal</small></h2></div>
                         </div>
                     </div>
                 </div>
@@ -70,10 +70,10 @@
 {% endblock %}
 
 {% block extrajs %}
-    {% if route %}
+    {% if run %}
         <script>
         var counts = {};
-        $.getJSON( "{{ url_for('cookies.cookies_count', calories=(route.calories|round(1)))}}", function( data ) {
+        $.getJSON( "{{ url_for('cookies.cookies_count', calories=(run.calories|round(1)))}}", function( data ) {
 
             $.each( data, function( key, val ) {
                 counts[key] = val;

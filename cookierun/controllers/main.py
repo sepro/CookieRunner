@@ -1,15 +1,18 @@
 from flask import Blueprint, render_template
 from flask.ext.login import current_user
 
-from cookierun.models.routes import Route
+from cookierun.models.runs import Run
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def main_screen():
+    """
+    Shows the main screen, if a user is logged in an overview is shown. Otherwise a link to the upload section
+    """
     if current_user.is_authenticated():
 
-        activities = Route.query.filter_by(user_id=current_user.get_id())
+        activities = Run.query.filter_by(user_id=current_user.get_id())
 
         total_duration = sum([a.duration for a in activities.all()])
         hours = str(int(total_duration//3600))

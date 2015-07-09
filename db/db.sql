@@ -1,5 +1,5 @@
 drop table if exists cookie;
-drop table if exists route;
+drop table if exists run;
 drop table if exists user;
 
 create table cookie (
@@ -10,7 +10,7 @@ create table cookie (
   website text not null
 );
 
-create table route (
+create table run (
   id integer primary key autoincrement,
   file_key text not null unique,
   distance float not null,
