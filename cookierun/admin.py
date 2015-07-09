@@ -44,7 +44,7 @@ class CookieAdminView(ModelView):
         self._on_model_change(form, model, True)
         self.session.commit()
 
-class RouteAdminView(ModelView):
+class RunAdminView(ModelView):
     column_exclude_list = ('gpx',)
 
     can_create = False

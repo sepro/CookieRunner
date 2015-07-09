@@ -53,7 +53,7 @@ def upload_screen():
             run_exists = Run.query.filter_by(file_key=file_hash).first()
 
             if run_exists is None:
-                route = Run(hasher.hexdigest(),
+                run = Run(hasher.hexdigest(),
                             gpx_parser.total_distance,
                             gpx_parser.total_calories(),
                             gpx_parser.average_speed,
@@ -62,13 +62,13 @@ def upload_screen():
                             user_id,
                             datetime.now().replace(microsecond=0))
 
-                db.session.add(route)
+                db.session.add(run)
                 db.session.commit()
 
                 flash("Uploaded file !", "success")
-                return redirect(url_for('runs.runs_view', route_id=route.id))
+                return redirect(url_for('runs.runs_view', run_id=run.id))
             else:
-                return redirect(url_for('runs.runs_view', route_id=run_exists.id))
+                return redirect(url_for('runs.runs_view', run_id=run_exists.id))
         else:
             flash("File type not supported, upload a GPX file", "danger")
             return redirect(url_for('upload.upload_screen'))

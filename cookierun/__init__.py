@@ -5,7 +5,7 @@ from flask.ext.admin.contrib.sqla import ModelView
 
 from cookierun.database import db
 from cookierun.loginmanager import login_manager
-from cookierun.admin import MyAdminIndexView, UserAdminView, CookieAdminView, RouteAdminView
+from cookierun.admin import MyAdminIndexView, UserAdminView, CookieAdminView, RunAdminView
 
 from cookierun.controllers.main import main
 from cookierun.controllers.cookie import cookies
@@ -32,7 +32,7 @@ db.create_all()
 admin = Admin(app, index_view=MyAdminIndexView())
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(CookieAdminView(Cookie, db.session))
-admin.add_view(RouteAdminView(Run, db.session))
+admin.add_view(RunAdminView(Run, db.session))
 
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
