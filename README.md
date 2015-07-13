@@ -31,11 +31,11 @@ Install the requirements
 
     pip3 install -r requirements.txt
 
-Copy the configuration template to config.cfg
+Copy the configuration template to config.py
 
-    cp config.template.cfg config.cfg
+    cp config.template.py config.py
 
-Change settings in config.cfg 
+Change settings in config.py
 
 Running the app
 ---------------

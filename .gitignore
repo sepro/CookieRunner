@@ -9,6 +9,7 @@ pip-selfcheck.json
 scripts
 
 config.cfg
+config.py
 
 *.swp
 

@@ -19,6 +19,8 @@ from cookierun.models.runs import Run
 
 app = Flask(__name__)
 
+app.config.from_object('config')
+
 db = SQLAlchemy(app)
 
 app.register_blueprint(main)
