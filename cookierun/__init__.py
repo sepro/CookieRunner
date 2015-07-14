@@ -1,11 +1,11 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_admin import Admin
+from flask.ext.login import LoginManager
 
-from cookierun.loginmanager import login_manager
 from cookierun.admin import MyAdminIndexView, UserAdminView, CookieAdminView, RunAdminView
 
-# Set up app and database before importing models and controllers
+# Set up app, database and login manager before importing models and controllers
 # Important for db_create script
 
 app = Flask(__name__)
@@ -14,6 +14,9 @@ app.config.from_object('config')
 
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
 
 from cookierun.models.users import User
 from cookierun.models.cookies import Cookie
@@ -37,6 +40,5 @@ admin.add_view(UserAdminView(User, db.session))
 admin.add_view(CookieAdminView(Cookie, db.session))
 admin.add_view(RunAdminView(Run, db.session))
 
-login_manager.init_app(app)
-login_manager.login_view = 'auth.login'
+
 

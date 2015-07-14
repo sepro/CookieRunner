@@ -1,7 +1,7 @@
 from flask import g, Blueprint, flash, redirect, url_for, render_template, request
 from flask.ext.login import current_user, login_user, logout_user, login_required
 
-from cookierun.loginmanager import login_manager
+from cookierun import login_manager
 from cookierun.models.users import User
 from cookierun.forms.login import LoginForm
 from cookierun.forms.registration import RegistrationForm

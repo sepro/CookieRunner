@@ -11,6 +11,8 @@ scripts
 config.cfg
 config.py
 
+db/cookies.sqlite
+
 *.swp
 
 __pycache__/
