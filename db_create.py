@@ -1,5 +1,4 @@
-from cookierun import app
-from cookierun.models.runs import db
+from cookierun import app, db
 
 
 db.create_all(app=app)

@@ -5,7 +5,7 @@ from cookierun.loginmanager import login_manager
 from cookierun.models.users import User
 from cookierun.forms.login import LoginForm
 from cookierun.forms.registration import RegistrationForm
-from cookierun.database import db
+from cookierun import db
 
 from datetime import datetime
 

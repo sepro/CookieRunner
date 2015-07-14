@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, render_template, request, redirect, ur
 from flask.ext.login import current_user
 from gpx.parser import GPXParser
 from cookierun.models.runs import Run
-from cookierun.database import db
+from cookierun import db
 from werkzeug.utils import secure_filename
 import hashlib
 
