@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+
+Script to create the initial database and migration information
+
+"""
 from migrate.versioning import api
 
 from config import SQLALCHEMY_DATABASE_URI

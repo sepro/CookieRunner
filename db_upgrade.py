@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+
+Script to update existing database to new layout based on the available migration file, run after updating code
+
+"""
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO

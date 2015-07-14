@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+
+Script to migrate a database, run each time a model changes and commit new migration file to repository along with
+the updated code !
+
+"""
 import imp
 from migrate.versioning import api
 
