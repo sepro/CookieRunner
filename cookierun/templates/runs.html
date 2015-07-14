@@ -16,17 +16,13 @@
                             <tbody>
                             {% for run in runs %}
                                 <tr><td><a href="{{ url_for('runs.runs_view', run_id=run.id) }}">Run {{ run.id }}</a></td><td>{{ run.added }}</td></tr>
-                            {% else %}
-                                <tr><td>No runs found in the database!</td></tr>
                             {% endfor %}
                             </tbody>
                         </table>
                 </div>
             </div>
         </div>
-    {% endif %}
-
-    {% if run %}
+    {% elif run %}
         <div class="row">
             <div class="col-xs-12">
                 <h1>Run {{ run.id }} <small>(added {{ run.added }})</small></h1>
@@ -63,6 +59,12 @@
             </div>
             <div class="col-md-6 col-xs-12" >
                 <div class="well" id="result">Select a cookie to see how many you can eat !</div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <h1>No runs found!</h1>
             </div>
         </div>
     {% endif %}

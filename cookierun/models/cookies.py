@@ -1,5 +1,4 @@
-from cookierun.database import db
-
+from cookierun import db
 
 class Cookie(db.Model):
     id = db.Column(db.Integer, primary_key=True)

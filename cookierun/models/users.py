@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from cookierun.database import db
+from cookierun import db
 from datetime import datetime
 
 class User(db.Model):

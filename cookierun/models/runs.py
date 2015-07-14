@@ -1,4 +1,4 @@
-from cookierun.database import db
+from cookierun import db
 from sqlalchemy.sql import null
 from datetime import datetime
 
