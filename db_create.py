@@ -9,6 +9,7 @@ from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 from config import UPLOAD_FOLDER
+from config import ADMIN_PASSWORD
 
 from cookierun import app, db
 
@@ -31,10 +32,10 @@ else:
 
 # If there are no users in the database create an admin account
 if len(User.query.all()) == 0:
-    db.session.add(User("admin", "admin", "admin@website.com", is_admin=True))
+    db.session.add(User("admin", ADMIN_PASSWORD, "admin@website.com", is_admin=True))
     db.session.commit()
 
-    print("\nAn admin account has been created. Username=\'admin\' and password=\'admin\'")
+    print("\nAn admin account has been created. Username=\'admin\' and password=\'" + ADMIN_PASSWORD + "\'")
     print("IMPORTANT: Change the password for this account")
 
 # If there are no cookies in the database add a default list
