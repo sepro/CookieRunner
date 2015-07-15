@@ -1,7 +1,11 @@
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin import AdminIndexView
+
 from flask.ext.login import current_user
+
 from wtforms import PasswordField
+
+from werkzeug.security import generate_password_hash
 
 from datetime import datetime
 
@@ -30,6 +34,14 @@ class UserAdminView(ModelView):
         form.populate_obj(model)
         self.session.add(model)
         self._on_model_change(form, model, True)
+        self.session.commit()
+
+    def update_model(self, form, model):
+        form.populate_obj(model)
+        if form.password.data:
+            model.password_hash = generate_password_hash(form.password.data)
+        self.session.add(model)
+        self._on_model_change(form, model, False)
         self.session.commit()
 
 class CookieAdminView(ModelView):
