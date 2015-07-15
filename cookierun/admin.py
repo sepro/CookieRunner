@@ -35,6 +35,7 @@ class UserAdminView(ModelView):
         self.session.add(model)
         self._on_model_change(form, model, True)
         self.session.commit()
+        return True
 
     def update_model(self, form, model):
         form.populate_obj(model)
@@ -43,6 +44,7 @@ class UserAdminView(ModelView):
         self.session.add(model)
         self._on_model_change(form, model, False)
         self.session.commit()
+        return True
 
 class CookieAdminView(ModelView):
 
@@ -55,6 +57,7 @@ class CookieAdminView(ModelView):
         self.session.add(model)
         self._on_model_change(form, model, True)
         self.session.commit()
+        return True
 
 class RunAdminView(ModelView):
     column_exclude_list = ('gpx',)
