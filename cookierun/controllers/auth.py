@@ -35,14 +35,11 @@ def register():
         email = request.form.get('email')
         existing_username = User.query.filter_by(username=username).first()
 
-        # the first user that logs in becomes the admin
-        is_admin = len(User.query.all()) == 0
-
         if existing_username:
             flash('This username has been already taken. Try another one.', 'warning')
             return render_template('register.html', form=form)
 
-        user = User(username, password, email, '', is_admin, False, datetime.now().replace(microsecond=0))
+        user = User(username, password, email, '', False, False, datetime.now().replace(microsecond=0))
         db.session.add(user)
         db.session.commit()
         flash('You are now registered. Please login.', 'success')
