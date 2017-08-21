@@ -143,8 +143,12 @@ class GPXParser:
 
                 # the first valid element is processed, get distance
                 if not (last_time is None):
-                    a = dt.strptime(last_time, "%Y-%m-%d %H:%M:%S")
-                    b = dt.strptime(current_time, "%Y-%m-%d %H:%M:%S")
+                    try:
+                        a = dt.strptime(last_time, "%Y-%m-%d %H:%M:%S.%f")
+                        b = dt.strptime(current_time, "%Y-%m-%d %H:%M:%S.%f")
+                    except ValueError:
+                        a = dt.strptime(last_time, "%Y-%m-%d %H:%M:%S")
+                        b = dt.strptime(current_time, "%Y-%m-%d %H:%M:%S")
                     time_difference = b - a
                     segment_time += time_difference.seconds
 
