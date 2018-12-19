@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash
-from flask.ext.login import current_user
+from flask_login import current_user
 from gpx.parser import GPXParser
 from cookierun.models.runs import Run
 from cookierun import db
@@ -47,7 +47,7 @@ def upload_screen():
             with open(filename, 'r') as content_file:
                 content = content_file.read()
 
-            user_id = current_user.id if current_user.is_authenticated() else -1
+            user_id = current_user.id if current_user.is_authenticated else -1
 
             file_hash = hasher.hexdigest() + '_' + str(user_id)
             run_exists = Run.query.filter_by(file_key=file_hash).first()

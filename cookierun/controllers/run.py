@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask.ext.login import current_user, login_required
+from flask_login import current_user, login_required
 
 from cookierun.models.runs import Run
 

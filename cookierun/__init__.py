@@ -1,7 +1,7 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 
 from cookierun.admin import MyAdminIndexView, UserAdminView, CookieAdminView, RunAdminView
 

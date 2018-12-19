@@ -1,7 +1,7 @@
-from flask.ext.admin.contrib.sqla import ModelView
-from flask.ext.admin import AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+from flask_admin import AdminIndexView
 
-from flask.ext.login import current_user
+from flask_login import current_user
 
 from wtforms import PasswordField
 
@@ -9,9 +9,11 @@ from werkzeug.security import generate_password_hash
 
 from datetime import datetime
 
+
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-        return current_user.is_authenticated() and current_user.is_administrator()
+        return current_user.is_authenticated and current_user.is_administrator
+
 
 class UserAdminView(ModelView):
     column_searchable_list = ('username',)
@@ -21,7 +23,7 @@ class UserAdminView(ModelView):
     form_edit_rules = ('username', 'email', 'is_admin', 'is_banned', 'password', )
 
     def is_accessible(self):
-        return current_user.is_authenticated() and current_user.is_administrator()
+        return current_user.is_authenticated and current_user.is_administrator
 
     def scaffold_form(self):
         form_class = super(UserAdminView, self).scaffold_form()
@@ -46,10 +48,11 @@ class UserAdminView(ModelView):
         self.session.commit()
         return True
 
+
 class CookieAdminView(ModelView):
 
     def is_accessible(self):
-        return current_user.is_authenticated() and current_user.is_administrator()
+        return current_user.is_authenticated and current_user.is_administrator
 
     def create_model(self, form):
         model = self.model(form.name.data, form.calories.data, form.brand.data, form.website.data)
@@ -59,6 +62,7 @@ class CookieAdminView(ModelView):
         self.session.commit()
         return True
 
+
 class RunAdminView(ModelView):
     column_exclude_list = ('gpx',)
 
@@ -66,4 +70,4 @@ class RunAdminView(ModelView):
     can_edit = False
 
     def is_accessible(self):
-        return current_user.is_authenticated() and current_user.is_administrator()
+        return current_user.is_authenticated and current_user.is_administrator

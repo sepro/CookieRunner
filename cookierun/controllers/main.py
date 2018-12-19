@@ -1,16 +1,17 @@
 from flask import Blueprint, render_template
-from flask.ext.login import current_user
+from flask_login import current_user
 
 from cookierun.models.runs import Run
 
 main = Blueprint('main', __name__)
+
 
 @main.route('/')
 def main_screen():
     """
     Shows the main screen, if a user is logged in an overview is shown. Otherwise a link to the upload section
     """
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
 
         activities = Run.query.filter_by(user_id=current_user.get_id())
 
