@@ -40,3 +40,6 @@ Change settings in config.py
 Running the app
 ---------------
 
+After configuring the app it can be run as any flask app. 
+
+    python run.py
